@@ -3,34 +3,65 @@ package numbers;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         Scanner scan =  new Scanner(System.in);
-        System.out.println("Enter a natural number:");
-        int number = scan.nextInt();
-        if (number <= 0) {
-            System.out.println("This number is not natural!");
-        } else if (number % 2 == 0) {
-            System.out.println("This number is Even.");
-            buzzNumber(number);
+        System.out.println("Welcome to Amazing Numbers!\n");
+        System.out.println("Supported requests:");
+        System.out.println("- enter a natural number to know its properties;");
+        System.out.println("- enter 0 to exit.");
+        long number;
+        do {
+            System.out.println("Enter a request:");
+            number = scan.nextInt();
+            if (number < 0) {
+                System.out.println("The first parameter should be a natural number or zero.");
+            } else if (number > 0){
+                checkOddEvenNumber(number);
+                checkBuzzNumber(number);
+                checkDuckNumber(number);
+            }
+        } while (number != 0);
+    }
+
+    public static void checkOddEvenNumber(long number) {
+        boolean odd = true;
+        boolean even = true;
+        if (number % 2 == 0) {
+            System.out.println("Properties of " + number);
+            System.out.println("\teven: " + even);
+            System.out.println("\todd: " + !odd);
         } else {
-            System.out.println("This number is Odd.");
-            buzzNumber(number);
+            System.out.println("Properties of " + number);
+            System.out.println("\teven: " + !even);
+            System.out.println("\todd: " + odd);
+
+        }
+    }
+    public static void checkBuzzNumber(long number) {
+        boolean buzz = true;
+        if (number % 7 != 0 && number % 10 != 7) {
+            System.out.println("\tbuzz: " + !buzz);
+        } else if (number % 7 == 0 && number % 10 == 7) {
+            System.out.println("\tbuzz: " + buzz);
+        } else if (number % 7 == 0) {
+            System.out.println("\tbuzz: " + buzz);
+        } else {
+            System.out.println("\tbuzz: " + buzz);
         }
     }
 
-    public static void buzzNumber(int number) {
-        if (number % 7 != 0 && number % 10 != 7) {
-            System.out.println("It is not a Buzz number./nExplanation:");
-            System.out.println(number + " is neither divisible by 7 nor does it end with 7.");
-        } else if (number % 7 == 0 && number % 10 == 7) {
-            System.out.println("It is a Buzz number./nExplanation:");
-            System.out.println(number + " is divisible by 7 and ends with 7.");
-        } else if (number % 7 == 0) {
-            System.out.println("It is a Buzz number./nExplanation:");
-            System.out.println(number + " is divisible by 7.");
-        } else {
-            System.out.println("It is a Buzz number./nExplanation:");
-            System.out.println(number + " ends with 7.");
+    public static void checkDuckNumber(long number) {
+        boolean duck = false;
+        String numDuck = Long.toString(number);
+        int i = 1;
+        while (i < numDuck.length() && !duck) {
+            if (numDuck.charAt(i) == '0') {
+                 duck = true;
+            }
+            i++;
         }
+
+        System.out.println("\tduck: " + duck);
     }
 }
