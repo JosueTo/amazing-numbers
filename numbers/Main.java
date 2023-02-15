@@ -13,13 +13,14 @@ public class Main {
         long number;
         do {
             System.out.println("Enter a request:");
-            number = scan.nextInt();
+            number = scan.nextLong();
             if (number < 0) {
                 System.out.println("The first parameter should be a natural number or zero.");
             } else if (number > 0){
                 checkOddEvenNumber(number);
                 checkBuzzNumber(number);
                 checkDuckNumber(number);
+                checkPalindromicNumber(number);
             }
         } while (number != 0);
     }
@@ -53,15 +54,27 @@ public class Main {
 
     public static void checkDuckNumber(long number) {
         boolean duck = false;
-        String numDuck = Long.toString(number);
+        String userNum = Long.toString(number);
         int i = 1;
-        while (i < numDuck.length() && !duck) {
-            if (numDuck.charAt(i) == '0') {
+        while (i < userNum.length() && !duck) {
+            if (userNum.charAt(i) == '0') {
                  duck = true;
             }
             i++;
         }
 
         System.out.println("\tduck: " + duck);
+    }
+
+    public static void checkPalindromicNumber(long number) {
+        boolean palindrome = true;
+        String userNum = Long.toString(number);
+        String numReversed = new StringBuilder(userNum).reverse().toString();
+
+        if(userNum.equals(numReversed)) {
+            System.out.println("\tpalindromic: " + palindrome);
+        } else {
+            System.out.println("\tpalindromic: " + !palindrome);
+        }
     }
 }
