@@ -1,11 +1,8 @@
 package numbers;
 
 import java.util.Scanner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Main {
-    public static int inputLen;
     public static void main(String[] args) {
         System.out.println("Welcome to Amazing Numbers!");
         Scanner scan =  new Scanner(System.in);
@@ -13,7 +10,7 @@ public class Main {
         long num;
         do {
             System.out.println("Enter a request:");
-            String request = scan.nextLine();
+            String request = scan.nextLine().trim();
             while (request.isBlank()) {
                 printInstructions();
                 System.out.println("Enter a request:");
@@ -22,7 +19,7 @@ public class Main {
 
             String[] params = request.split(" ");
             num = Long.parseLong(params[0]);
-            inputLen = params.length;
+            int inputLen = params.length;
             Printer printer = new Printer();
             switch (inputLen) {
                 case 1:
@@ -36,6 +33,13 @@ public class Main {
                     listLen = Integer.parseInt(params[1]);
                     String property = params[2];
                     printer.printProperties(num, listLen, property);
+                    break;
+                case 4:
+                    listLen = Integer.parseInt(params[1]);
+                    String property1 = params[2];
+                    String property2 = params[3];
+                    printer.printProperties(num, listLen, property1, property2);
+                    break;
                 default:
                     break;
             }
@@ -50,7 +54,7 @@ public class Main {
         System.out.println("- enter two natural numbers to obtain the properties of the list:");
         System.out.println("\t* the first parameter represents a starting number;");
         System.out.println("\t* the second parameter shows how many consecutive numbers are to be processed;");
-        System.out.println("- two natural numbers and a property to search for;");
+        System.out.println("- two natural numbers and two properties to search for;");
         System.out.println("- separate the parameters with one space;");
         System.out.println("- enter 0 to exit.");
     }
