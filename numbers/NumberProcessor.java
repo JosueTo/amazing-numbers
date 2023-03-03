@@ -45,4 +45,18 @@ public class NumberProcessor {
         long sqrt = (long) Math.sqrt(number);
         return (sqrt * sqrt == number);
     }
+
+    public boolean isJumpingNumber (long number) {
+        String[] userNum = Long.toString(number).split("");
+        if (userNum.length == 1) { return true;}
+
+        for (int i = 0; i < userNum.length - 1; i++) {
+            int currentPos = Integer.parseInt(userNum[i]);
+            int nextPos = Integer.parseInt(userNum[i + 1]);
+            if (Math.abs(currentPos - nextPos) != 1) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
