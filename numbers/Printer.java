@@ -22,6 +22,8 @@ public class Printer extends NumberProcessor{
             System.out.println("\tsunny: " + isSunnyNumber(number));
             System.out.println("\tsquare: " + isPerfectSquareNumber(number));
             System.out.println("\tjumping: " + isJumpingNumber(number));
+            System.out.println("\thappy: " + isHappyNumber(number));
+            System.out.println("\tsad: " + !isHappyNumber(number));
         }
     }
 
@@ -37,15 +39,22 @@ public class Printer extends NumberProcessor{
     }
 
     public void printProperties(long number, int listLen, String property) {
-        String[] properties = {"even", "odd", "buzz", "duck", "palindromic", "gapful", "spy", "sunny", "square", "jumping"};
+        String[] properties = {"even", "odd", "buzz", "duck", "palindromic", "gapful", "spy", "sunny",
+                "square", "jumping", "happy", "sad"};
+        String[] negativeProperties = {"-even", "-odd", "-buzz", "-duck", "-palindromic", "-gapful", "-spy", "-sunny",
+                "-square", "-jumping", "-happy", "-sad"};
         String prop = property.toLowerCase();
 
-        if (!Arrays.asList(properties).contains(prop)) {
+        if (!Arrays.asList(properties).contains(prop) && !Arrays.asList(negativeProperties).contains(prop)) {
             System.out.println("The property " + "[" + prop.toUpperCase() + "]" + " is wrong.\n" +
-                    "Available properties: [BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, EVEN, ODD, SUNNY, SQUARE, JUMPING]");
+                    "Available properties: " + Arrays.toString(properties).toUpperCase());
         } else {
             int count = 0;
             while (count < listLen) {
+                if (prop.charAt(0) == '-' && !hasProperty(number, prop.substring(1))) {
+                    System.out.println(propList(number));
+                    count++;
+                }
                 if (hasProperty(number, prop)) {
                     System.out.println(propList(number));
                     count++;
@@ -57,12 +66,15 @@ public class Printer extends NumberProcessor{
 
     public void printProperties(long number, int listLen, String[] properties) {
         String[] validProperties = {"even", "odd", "buzz", "duck", "palindromic", "gapful", "spy", "sunny",
-                "square", "jumping"};
+                "square", "jumping", "happy", "sad"};
+        String[] negativeProperties = {"-even", "-odd", "-buzz", "-duck", "-palindromic", "-gapful", "-spy", "-sunny",
+                "-square", "-jumping", "-happy", "-sad"};
         int invalidProp = 0;
         ArrayList<String> invalidPropList = new ArrayList<>();
 
         for (String property : properties) {
-            if (!Arrays.asList(validProperties).contains(property.toLowerCase())) {
+            if (!Arrays.asList(validProperties).contains(property.toLowerCase()) &&
+                    !Arrays.asList(negativeProperties).contains(property.toLowerCase())) {
                 invalidProp++;
                 invalidPropList.add(property);
             }
@@ -84,6 +96,9 @@ public class Printer extends NumberProcessor{
                 while (count < listLen) {
                     int countProp = 0;
                     for (int i = 0; i < properties.length; i++) {
+                        if (properties[i].charAt(0) == '-' && !hasProperty(number, properties[i].substring(1))) {
+                            countProp += 1;
+                        }
                         if (hasProperty(number, properties[i])) {
                             countProp += 1;
                         }
@@ -119,8 +134,11 @@ public class Printer extends NumberProcessor{
         String sunny = isSunnyNumber(number) ? "sunny" : "";
         String square = isPerfectSquareNumber(number) ? "square" : "";
         String jumping = isJumpingNumber(number) ? "jumping" : "";
+        String happy = isHappyNumber(number) ? "happy" : "";
+        String sad = !isHappyNumber(number) ? "sad" : "";
 
-        String listProperties = Stream.of(even, odd, buzz, duck, palindromic, gapful, spy, sunny, square, jumping)
+        String listProperties = Stream.of(even, odd, buzz, duck, palindromic, gapful, spy, sunny, square,
+                        jumping, happy, sad)
                 .filter(str -> str != null && !str.isEmpty())
                 .collect(Collectors.joining(", "));
         return (number + " is " + listProperties);
@@ -138,17 +156,34 @@ public class Printer extends NumberProcessor{
             case "sunny" -> isSunnyNumber(number);
             case "square" -> isPerfectSquareNumber(number);
             case "jumping" -> isJumpingNumber(number);
+            case "happy" -> isHappyNumber(number);
+            case "sad" -> !isHappyNumber(number);
             default -> false;
         };
     }
 
     public boolean hasMutuallyExclusiveProperties(String property, String property2) {
+        if (property.equals(property2)) { return false; }
+        if (property.equals(property2.substring(1)) || property2.equals(property.substring(1))) {
+            return true;
+        }
+
         String[] exProp1 = {"even", "odd"};
         String[] exProp2 = {"duck", "spy"};
         String[] exProp3 = {"sunny", "square"};
+        String[] exProp4 = {"happy", "sad"};
+        String[] exProp5 = {"-even", "-odd"};
+        String[] exProp6 = {"-duck", "-spy"};
+        String[] exProp7 = {"-sunny", "-square"};
+        String[] exProp8 = {"-happy", "-sad"};
         return Arrays.asList(exProp1).contains(property) && Arrays.asList(exProp1).contains(property2) ||
                 Arrays.asList(exProp2).contains(property) && Arrays.asList(exProp2).contains(property2) ||
-                Arrays.asList(exProp3).contains(property) && Arrays.asList(exProp3).contains(property2);
+                Arrays.asList(exProp3).contains(property) && Arrays.asList(exProp3).contains(property2) ||
+                Arrays.asList(exProp4).contains(property) && Arrays.asList(exProp4).contains(property2) ||
+                Arrays.asList(exProp5).contains(property) && Arrays.asList(exProp5).contains(property2) ||
+                Arrays.asList(exProp6).contains(property) && Arrays.asList(exProp6).contains(property2) ||
+                Arrays.asList(exProp7).contains(property) && Arrays.asList(exProp7).contains(property2) ||
+                Arrays.asList(exProp8).contains(property) && Arrays.asList(exProp8).contains(property2);
 
     }
 
